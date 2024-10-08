@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'HOD') {
+if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'supervisor') {
     header('Location: login.php');
     exit;
 }
@@ -35,7 +35,7 @@ $result = $conn->query($query);
     </div>
 <?php endif; ?>
 
-<h2>HOD Dashboard - Manage Complaints</h2>
+<h2>SUPERVISER Dashboard - Manage Complaints</h2>
 
 <table>
     <tr>
