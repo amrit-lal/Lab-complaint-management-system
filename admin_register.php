@@ -7,7 +7,7 @@ if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
 ?>
 <?php include('templates/header.php'); ?>
 <h2>User Registration</h2>
-<form action="register.php" method="POST">
+<form action="admin_register.php" method="POST">
     <input type="text" name="username" placeholder="Username" required>
     <input type="password" name="password" placeholder="Password" required>
    <input type="email" name="email" placeholder="Email" required>
@@ -29,13 +29,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $email = $_POST['email'];
     $user_type = $_POST['user_type'];
-
-    $query = "INSERT INTO users (username, password, email, user_type) VALUES ('$username', '$password','$email', '$user_type')";
-    if ($conn->query($query)) {
-        echo "Registration successful!";
-    } else {
-        echo "Error: " . $conn->error;
-    }
+        // Check if email already exists
+        $email_check_query = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+        $result = $conn->query($email_check_query);
+        
+        if ($result->num_rows > 0) {
+            // Email already exists
+            echo "Error: Email already registered. Please use a different email.";
+        } else {
+            // Proceed with registration
+            $query = "INSERT INTO users (username, password, email, user_type) VALUES ('$username', '$password','$email', '$user_type')";
+            if ($conn->query($query)) {
+                echo "Registration successful!";
+            } else {
+                echo "Error: " . $conn->error;
+            }
+        }
 }
 ?>
 <?php include('templates/footer.php'); ?>

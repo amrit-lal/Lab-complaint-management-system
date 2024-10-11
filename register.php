@@ -3,8 +3,7 @@
 <form action="register.php" method="POST">
     <input type="text" name="username" placeholder="Username" required>
     <input type="password" name="password" placeholder="Password" required>
-   <input type="email" name="email" placeholder="Email" required>
-
+    <input type="email" name="email" placeholder="Email" required>
     
     <button type="submit">Register</button>
 </form>
@@ -18,12 +17,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $user_type = "student";
 
-    $query = "INSERT INTO users (username, password, email, user_type) VALUES ('$username', '$password','$email', '$user_type')";
-    if ($conn->query($query)) {
-        echo "Registration successful!";
+    // Check if email already exists
+    $email_check_query = "SELECT * FROM users WHERE email = '$email' LIMIT 1";
+    $result = $conn->query($email_check_query);
+    
+    if ($result->num_rows > 0) {
+        // Email already exists
+        echo "Error: Email already registered. Please use a different email.";
     } else {
-        echo "Error: " . $conn->error;
+        // Proceed with registration
+        $query = "INSERT INTO users (username, password, email, user_type) VALUES ('$username', '$password','$email', '$user_type')";
+        if ($conn->query($query)) {
+            echo "Registration successful!";
+        } else {
+            echo "Error: " . $conn->error;
+        }
     }
 }
 ?>
+
 <?php include('templates/footer.php'); ?>
