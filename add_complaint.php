@@ -45,7 +45,7 @@ if (isset($_POST['submit_complaint'])) {
     <input type="text" id="pc_number" name="pc_number" placeholder="Enter PC Number" required>
 
     <!-- Room Number Field -->
-    <label for="room_number">Room Number:</label>
+    <label for="room_number">LAB Number:</label>
     <input type="text" id="room_number" name="room_number" placeholder="Enter Room Number" required>
 
     <!-- Fault Components Dropdown -->
